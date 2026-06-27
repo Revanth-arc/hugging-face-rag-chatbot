@@ -43,37 +43,37 @@ Features
 ⸻
 
 Architecture
-
-User Query
+```
+ User Query
      │
      ▼
-Embed User Query
+ Embed User Query
      │
      ▼
-FAISS Similarity Search
+ FAISS Similarity Search
      │
      ▼
-Retrieve Top-K Chunks
+ Retrieve Top-K Chunks
      │
      ▼
-Remove Duplicate Contexts
+ Remove Duplicate Contexts
      │
      ▼
-Construct Prompt
+ Construct Prompt
      │
      ▼
-Large Language Model
+ Large Language Model
      │
      ▼
-Generated Response
+ Generated Response
      │
      ▼
-Display Retrieved Sources
-
+ Display Retrieved Sources
+```
 ⸻
 
 Project Structure
-
+```text
 hugging-face-rag-chatbot/
 │
 ├── app.py
@@ -90,7 +90,7 @@ hugging-face-rag-chatbot/
 │
 └── screenshots/
     └── demo.png
-
+```
 ⸻
 
 Knowledge Source
@@ -115,7 +115,9 @@ Each dataset record is converted into a structured text representation before em
 Example:
 
 Category: Any Other Cyber Crime
+
 Sub Category: Other Crime
+
 Additional Information:
 OnePlus phone stolen from IFFCO Chowk Bus Stand...
 
@@ -130,9 +132,9 @@ Embedding Model
 Embeddings are generated using the Sentence Transformers library.
 
 Recommended model:
-
+```
 all-MiniLM-L6-v2
-
+```
 Reasons for choosing this model:
 
 * Lightweight
@@ -187,12 +189,12 @@ Prompt Engineering
 Retrieved contexts are formatted as individual sources.
 
 Example:
-
+```
 [Source 1]
 ...
 [Source 2]
 ...
-
+```
 This structure improves context separation and helps the language model better utilize retrieved evidence.
 
 ⸻
@@ -245,24 +247,27 @@ Deep Learning	PyTorch
 
 ⸻
 
-Installation
-
+Installation :
+```
 Clone the repository.
 
 git clone https://github.com/Revanth-arc/hugging-face-rag-chatbot.git
-
+```
+```
 Move into the project directory.
 
 cd hugging-face-rag-chatbot
-
+```
+```
 Install the required dependencies.
 
 pip install -r requirements.txt
-
+```
+```
 Run the application.
 
 streamlit run app.py
-
+```
 ⸻
 
 Example Query
