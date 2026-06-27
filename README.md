@@ -1,46 +1,59 @@
-🤖 Hugging Face RAG Chatbot
+Hugging Face RAG Chatbot
 
-A Retrieval-Augmented Generation (RAG) chatbot built with Streamlit, Sentence Transformers, FAISS, and the Hugging Face Datasets library. The application retrieves the most relevant information from a knowledge base and uses an LLM to generate context-aware responses.
+A Retrieval-Augmented Generation (RAG) chatbot built using Streamlit, Hugging Face Datasets, Sentence Transformers, FAISS, and Transformer-based Large Language Models.
 
-⸻
-
-📌 Overview
-
-This project demonstrates a complete Retrieval-Augmented Generation (RAG) pipeline:
-
-* Load a Hugging Face dataset as the knowledge source
-* Split the dataset into meaningful chunks
-* Generate semantic embeddings
-* Store embeddings in a FAISS vector database
-* Retrieve the most relevant chunks for a user query
-* Generate an answer using an LLM
-* Display the retrieved sources for transparency
-
-Unlike a traditional chatbot, this application grounds its responses using retrieved documents, reducing hallucinations and improving factual accuracy.
+The application retrieves semantically relevant information from a knowledge base and uses the retrieved context to generate accurate, grounded responses instead of relying solely on the language model.
 
 ⸻
 
-✨ Features
+Overview
 
-* 📚 Retrieval-Augmented Generation (RAG)
-* 🤗 Uses Hugging Face datasets
-* 🔍 Semantic similarity search with FAISS
-* 🧠 Sentence Transformer embeddings
-* 💬 Streamlit chat interface
-* 📂 Expandable retrieved source viewer
-* 🔄 Context deduplication
-* 🎯 Improved prompt engineering
-* ⚡ Fast local inference
-* 🌙 Clean dark-themed UI
+This project implements a complete Retrieval-Augmented Generation (RAG) pipeline.
+
+The workflow consists of:
+
+1. Loading a Hugging Face dataset as the knowledge source.
+2. Transforming the dataset into searchable text chunks.
+3. Generating semantic embeddings for every chunk.
+4. Indexing the embeddings using FAISS.
+5. Retrieving the most relevant chunks for each user query.
+6. Constructing a context-aware prompt.
+7. Generating an answer using a Large Language Model.
+8. Displaying the retrieved sources for transparency.
+
+Unlike a conventional chatbot, responses are generated from retrieved evidence, significantly reducing hallucinations and improving factual consistency.
 
 ⸻
 
-🏗️ Project Architecture
+Features
+
+* Retrieval-Augmented Generation (RAG)
+* Hugging Face Dataset integration
+* Semantic similarity search
+* FAISS vector database
+* Sentence Transformer embeddings
+* Streamlit chat interface
+* Conversation history
+* Expandable retrieved source viewer
+* Context deduplication
+* Prompt engineering improvements
+* Fast local inference
+* Clean dark-themed interface
+
+⸻
+
+Architecture
 
 User Query
      │
      ▼
-Retrieve Top-K Relevant Chunks
+Embed User Query
+     │
+     ▼
+FAISS Similarity Search
+     │
+     ▼
+Retrieve Top-K Chunks
      │
      ▼
 Remove Duplicate Contexts
@@ -49,14 +62,17 @@ Remove Duplicate Contexts
 Construct Prompt
      │
      ▼
-LLM Generation
+Large Language Model
      │
      ▼
-Generated Answer + Retrieved Sources
+Generated Response
+     │
+     ▼
+Display Retrieved Sources
 
 ⸻
 
-📁 Project Structure
+Project Structure
 
 hugging-face-rag-chatbot/
 │
@@ -77,213 +93,222 @@ hugging-face-rag-chatbot/
 
 ⸻
 
-📄 Knowledge Source
+Knowledge Source
 
-The chatbot uses a Hugging Face dataset containing cyber crime complaint records as its knowledge base.
+The chatbot uses a Hugging Face dataset containing cybercrime complaint records as its knowledge base.
 
-The dataset includes information such as:
+Each record includes structured information such as:
 
-* Crime Category
-* Sub Category
-* Complaint Details
-* Additional Information
+* Crime category
+* Sub-category
+* Complaint description
+* Additional information
 
-The dataset is transformed into searchable text chunks before indexing.
+The dataset is transformed into semantic chunks before indexing to support efficient retrieval.
 
 ⸻
 
-✂️ How Chunking Works
+Chunking Strategy
 
-The loader converts each dataset record into a structured text representation.
+Each dataset record is converted into a structured text representation before embedding.
 
 Example:
 
 Category: Any Other Cyber Crime
 Sub Category: Other Crime
-Additional Info:
+Additional Information:
 OnePlus phone stolen from IFFCO Chowk Bus Stand...
 
-Each record becomes one semantic chunk.
+Each complaint is treated as an individual semantic chunk.
 
-This preserves contextual meaning while allowing efficient retrieval.
+This approach preserves the contextual relationship between fields while enabling efficient retrieval.
 
 ⸻
 
-🧠 Embedding Model
+Embedding Model
 
-The application generates embeddings using:
-
-sentence-transformers
+Embeddings are generated using the Sentence Transformers library.
 
 Recommended model:
 
 all-MiniLM-L6-v2
 
-This lightweight embedding model provides:
+Reasons for choosing this model:
 
+* Lightweight
 * Fast inference
-* Good semantic understanding
-* Low memory usage
-* Excellent retrieval quality
+* Strong semantic understanding
+* High retrieval quality
+* Low memory consumption
 
 ⸻
 
-🗄️ Vector Store
+Vector Store
 
-The generated embeddings are stored in:
+The project uses FAISS (Facebook AI Similarity Search) for vector indexing.
 
-FAISS (Facebook AI Similarity Search)
-
-FAISS enables fast nearest-neighbor search even for thousands of documents.
+FAISS enables efficient nearest-neighbor search over thousands of embedded documents and provides low-latency semantic retrieval.
 
 ⸻
 
-🔍 Retrieval Pipeline
+Retrieval Pipeline
 
-1. User enters a question.
-2. The question is embedded.
-3. FAISS retrieves the Top-K similar chunks.
-4. Duplicate contexts are removed.
-5. Clean context is passed to the LLM.
-6. The generated response is displayed.
-7. Retrieved source documents are shown for transparency.
+For every user query, the application performs the following steps:
+
+1. Generate an embedding for the query.
+2. Perform similarity search using FAISS.
+3. Retrieve the Top-K most relevant chunks.
+4. Remove duplicate and near-duplicate contexts.
+5. Build a structured prompt.
+6. Send the prompt to the language model.
+7. Generate a grounded response.
+8. Display the retrieved sources alongside the answer.
 
 ⸻
 
-🚀 Recent Improvements
+Recent Improvements
 
-Several improvements were added to enhance response quality:
+The retrieval and response generation pipeline has been refined to improve response quality and user experience.
 
-✅ Context Deduplication
+Context Deduplication
 
-* Removes duplicate retrieved chunks
-* Eliminates repetitive responses
+A deduplication step removes duplicate and highly similar retrieved chunks before prompt construction.
+
+Benefits:
+
+* Eliminates repetitive context
 * Improves prompt quality
+* Produces more concise answers
 
 ⸻
 
-✅ Better Prompt Engineering
+Prompt Engineering
 
-Retrieved contexts are formatted as:
+Retrieved contexts are formatted as individual sources.
+
+Example:
 
 [Source 1]
 ...
 [Source 2]
 ...
 
-This helps the LLM better understand individual pieces of evidence.
+This structure improves context separation and helps the language model better utilize retrieved evidence.
 
 ⸻
 
-✅ Expandable Source Viewer
+Improved Retrieval
 
-Users can inspect the exact retrieved contexts using the View Retrieved Sources panel.
-
-This improves explainability and transparency.
-
-⸻
-
-✅ Increased Retrieval Quality
+The retrieval stage now:
 
 * Retrieves more candidate chunks
 * Filters duplicate contexts
-* Uses the most informative sources
+* Retains the highest quality unique contexts
+
+This improves both retrieval diversity and answer quality.
 
 ⸻
 
-✅ Cleaner UI
+User Interface Improvements
 
-* Chat interface
-* Expandable retrieved sources
-* Improved readability
-* Better visual hierarchy
+The Streamlit interface includes:
 
-⸻
-
-💻 Technologies Used
-
-* Python
-* Streamlit
-* Hugging Face Datasets
-* Sentence Transformers
-* FAISS
-* Transformers
-* PyTorch
+* Chat-style conversation
+* Expandable retrieved source viewer
+* Improved response formatting
+* Better readability
+* Cleaner layout
 
 ⸻
 
-⚙️ Installation
+Response Quality Improvements
 
-Clone the repository:
+Additional improvements include:
+
+* Increased response token limit
+* Better prompt construction
+* Improved context organization
+* Transparent evidence display
+
+⸻
+
+Technologies Used
+
+Category	Technology
+Language	Python
+Frontend	Streamlit
+Dataset	Hugging Face Datasets
+Embeddings	Sentence Transformers
+Vector Database	FAISS
+Language Model	Transformers
+Deep Learning	PyTorch
+
+⸻
+
+Installation
+
+Clone the repository.
 
 git clone https://github.com/Revanth-arc/hugging-face-rag-chatbot.git
+
+Move into the project directory.
+
 cd hugging-face-rag-chatbot
 
-Install dependencies:
+Install the required dependencies.
 
 pip install -r requirements.txt
 
-Run the application:
+Run the application.
 
 streamlit run app.py
 
 ⸻
 
-📸 Screenshot
-
-Example of the application interface:
-
-⸻
-
-📖 Example Query
+Example Query
 
 Give an overview of the cases in the dataset.
 
-Example Response:
-
-* Summary of retrieved cyber crime complaints
-* Relevant categories
-* Complaint details
-* Supporting retrieved sources
+The application retrieves the most relevant complaint records, removes duplicate contexts, constructs a retrieval-aware prompt, and generates a context-grounded response.
 
 ⸻
 
-🔮 Future Improvements
+Screenshot
 
-Given additional development time, the project could be extended with:
+Place a screenshot of the running application inside:
 
-* Streaming LLM responses
-* Multi-turn conversational memory
-* Hybrid search (BM25 + Semantic Search)
+screenshots/demo.png
+
+Example:
+
+![Application Screenshot](screenshots/demo.png)
+
+⸻
+
+Future Improvements
+
+Given additional development time, the following enhancements could be incorporated:
+
+* Streaming response generation
+* Conversational memory
+* Hybrid retrieval (BM25 + Semantic Search)
 * Metadata filtering
 * Query rewriting
-* Better chunk ranking
-* Source citations
+* Advanced reranking
+* Source citation highlighting
 * PDF upload support
-* Multiple document collections
+* Multiple knowledge bases
 * ChromaDB or LanceDB backend
-* Authentication
+* User authentication
 * Deployment on Hugging Face Spaces
 
 ⸻
 
-📷 Demo
-
-The chatbot provides:
-
-* Interactive chat interface
-* Context-aware responses
-* Semantic retrieval
-* Transparent retrieved sources
-* Clean and responsive UI
-
-⸻
-
-👨‍💻 Author
+Author
 
 Revanth Chary
 
-B.Tech Computer Science (Artificial Intelligence)
+B.Tech Computer Science and Engineering (Artificial Intelligence & Machine Learning)
 
 ICFAI University, Hyderabad
 
@@ -291,6 +316,6 @@ GitHub: https://github.com/Revanth-arc
 
 ⸻
 
-📜 License
+License
 
-This project is developed for educational and internship purposes.
+This project was developed for educational and internship purposes.
